@@ -12,6 +12,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install Node.js and npm
+        run: |
+          sudo apt update 
+          sudo apt install -y curl git
+          curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo apt install -y nodejs
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -19,7 +26,16 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /
-            git pull origin main
+            # Navigate to the app directory
+            cd /home/ubuntu/app
+
+            # If it's not a Git repo, clone the repo
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/amit2111github/ec2-ci-cd.git /home/ubuntu/app
+            else
+              git pull origin main
+            fi
+
+            # Install dependencies and start the app
             npm install
             npm run start
