@@ -11,4 +11,7 @@ app.get("/user/all" ,async(req , res) => {
 app.get("/health" , async(req , res) => {
     res.json({ok : 200});
 })
+app.get("/amit" , async (req ,res) => {
+    return res.json({msg : "Response from amit"});
+})
 app.listen(PORT , () => console.log(`Running on port ${PORT}`))
