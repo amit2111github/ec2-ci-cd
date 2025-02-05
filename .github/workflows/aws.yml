@@ -27,11 +27,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Navigate to the app directory
-            cd /
+            mkdir /app
+            cd /app
 
             # If it's not a Git repo, clone the repo
             if [ ! -d ".git" ]; then
-              git clone https://github.com/amit2111github/ec2-ci-cd.git /
+              git clone https://github.com/amit2111github/ec2-ci-cd.git /app
             else
               git pull origin main
             fi
